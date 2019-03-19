@@ -7,6 +7,18 @@
         "API_KEY": {
             "description": "Your Open Weather Map API Key.",
             "required": false
+        },
+        "CITY": {
+            "description": "City name, in the Open Weather Map format.",
+            "default": "Toulouse,fr"
+        },
+        "BASE_URL": {
+            "descriptions": "Open Wether Map API base url.",
+            "default": "https://api.openweathermap.org/data/2.5"
+        },
+        "UNITS": {
+            "description": "Value units: metric or imperial.",
+            "default": "metric"
         }
     }
   }

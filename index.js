@@ -5,14 +5,30 @@ const request = require('request')
 const app = express()
 const PORT = process.env.PORT || 3000
 const API_KEY = process.env.API_KEY
-const OWM_BASE_URL = "https://api.openweathermap.org/data/2.5"
+const CITY    = process.env.CITY
+const BASE_URL = process.env.BASE_URL
+const UNITS = process.env.UNITS
 
 function mod(n, m) {
   return ((n % m) + m) % m;
 }
 
+function validateReqAndGetParams(req){
+  api_key = req.query.appid || API_KEY
+  location = req.query.q || CITY
+  units = req.query.units || UNITS
+  if (!location || !api_key) {
+    return undefined
+  }
+  return {
+    "appid":   api_key,
+    "units":    units,
+    "q":        location,
+  }
+}
+
 function getQuery(path, params) {
-  return OWM_BASE_URL + path + "?" + Object.keys(params).map(key => `${key}=${params[key]}`).join('&')
+  return BASE_URL + path + "?" + Object.keys(params).map(key => `${key}=${params[key]}`).join('&')
 }
 
 function extractWeatherChunk(chunk) {
@@ -63,16 +79,12 @@ function getMostPresentWeatherIdsByDay(chunkList) {
 }
 
 app.get('/forecast', function (req, res) {
-  api_key = API_KEY || req.query.appid
-  if (!req.query.q || !api_key) {
-    return res.status(400).send('Bad Request');
+  let params = validateReqAndGetParams(req)
+  if (!params){
+    return res.status(400).send('Bad Request')
   }
-  let query_params = {
-    "appid":   api_key,
-    "units":    req.query.units || 'metric',
-    "q":        req.query.q,
-  }
-  let query = getQuery(req.path, query_params)
+
+  let query = getQuery(req.path, params)
   request(query, function (error, response, body) {
     let json  = JSON.parse(body)
     let obj   = { list: getMostPresentWeatherIdsByDay(json.list) }
@@ -82,18 +94,12 @@ app.get('/forecast', function (req, res) {
 })
 
 app.get('/weather', function (req, res) {
-  api_key = API_KEY || req.query.appid
-  if (!req.query.q || !api_key) {
-    return res.status(400).send('Bad Request');
+  let params = validateReqAndGetParams(req)
+  if (!params){
+    return res.status(400).send('Bad Request')
   }
 
-  let query_params = {
-    "appid":   api_key,
-    "units":    req.query.units || 'metric',
-    "q":        req.query.q,
-  }
-  let query = getQuery(req.path, query_params)
-
+  let query = getQuery(req.path, params)
   request(query, function (error, response, body) {
     let json = JSON.parse(body)
     let obj = extractWeatherChunk(json)
