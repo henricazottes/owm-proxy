@@ -1,0 +1,13 @@
+{
+    "name": "OWM Proxy",
+    "description": "An open weather map proxy to reduce API results",
+    "repository": "https://github.com/henricazottes/owm-proxy",
+    "keywords": ["node", "express", "api"],
+    "env": {
+        "API_KEY": {
+            "description": "Your Open Weather Map API Key.",
+            "required": true
+        }
+    }
+  }
+  
