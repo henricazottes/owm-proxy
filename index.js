@@ -63,9 +63,12 @@ function getMostPresentWeatherIdsByDay(chunkList) {
 }
 
 app.get('/forecast', function (req, res) {
+  if (!req.query.q) {
+    res.status(400).send('Bad Request');
+  }
   let query_params = {
     "appid":   API_KEY,
-    "units":    req.query.units,
+    "units":    req.query.units || 'metric',
     "q":        req.query.q,
   }
   let query = getQuery(req.path, query_params)
@@ -78,9 +81,13 @@ app.get('/forecast', function (req, res) {
 })
 
 app.get('/weather', function (req, res) {
+  if (!req.query.q) {
+    res.status(400).send('Bad Request');
+  }
+
   let query_params = {
     "appid":   API_KEY,
-    "units":    req.query.units,
+    "units":    req.query.units || 'metric',
     "q":        req.query.q,
   }
   let query = getQuery(req.path, query_params)
@@ -91,6 +98,10 @@ app.get('/weather', function (req, res) {
     res.set('Content-Type', 'application/json');
     res.send(obj)
   })
+})
+
+app.get('/', function (req, res) {
+  res.send("Hello world :)")
 })
 
 app.listen(PORT, function () {
