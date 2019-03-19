@@ -10,15 +10,18 @@
         },
         "CITY": {
             "description": "City name, in the Open Weather Map format.",
-            "value": "Toulouse,fr"
+            "value": "Toulouse,fr",
+            "required": false
         },
         "BASE_URL": {
             "descriptions": "Open Wether Map API base url.",
-            "value": "https://api.openweathermap.org/data/2.5"
+            "value": "https://api.openweathermap.org/data/2.5",
+            "required": false
         },
         "UNITS": {
             "description": "Value units: metric or imperial.",
-            "value": "metric"
+            "value": "metric",
+            "required": false
         }
     }
   }
