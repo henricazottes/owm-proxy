@@ -6,7 +6,7 @@
     "env": {
         "API_KEY": {
             "description": "Your Open Weather Map API Key.",
-            "required": true
+            "required": false
         }
     }
   }
