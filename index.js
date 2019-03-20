@@ -39,10 +39,9 @@ function extractWeatherChunk(chunk) {
       obj.weather = current_value[0].id
     } else if (key == "main") {
       obj.temp = current_value.temp
-    } else if (key == "dt") {
-      obj.dt = current_value
     }
   })
+  obj.dt = Math.floor(new Date().getTime()/1000)
   return obj
 }
 
